@@ -16,6 +16,7 @@
 
 ### Uploader上传组件
 **目前只支持小程序上传图片到七牛云的项目**
+**注：如传maxCount，maxCount必须大于count**
  - src -- 获取七牛云token的链接（后端给出）
  - region -- 图片上传的地区
  - header -- 调用接口时的header属性
@@ -28,7 +29,7 @@
  - maxCount -- 可上传的最大图片数
  - isPreview -- 是否可预览
  - isShow -- 上传的按钮是否显示
-**注：如传maxCount，maxCount必须大于count**
+
  
 ### Toast组件
 **目前只支持换行，不支持换图**
@@ -45,6 +46,7 @@
  
 ### Dialog组件
 **目前支持换行及在dialog内容里自定义样式**
+**注：dialog内容里自定义样式需要加‘<view slot="content-description"></view>’**
  - title -- 标题
  - content -- 内容
  - cancleText -- 可自定义取消文案
@@ -52,6 +54,6 @@
  - cancleShow -- 是否显示取消按钮
  - confirmEvent -- 确定事件回调
  - cancleEvent -- 取消事件回调
-**注：dialog内容里自定义样式需要加<view slot="content-description"></view>**
+
 
 
