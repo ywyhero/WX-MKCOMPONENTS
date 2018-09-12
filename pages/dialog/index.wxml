@@ -1,0 +1,23 @@
+<view class="component">
+    <view class="component-description">
+        <text class="component-title">Dialog组件</text>
+        <view class="component-content">
+            <view class="component-des-title">
+                <text>参数</text>
+                <text>类型</text>
+                <text>必填</text>
+                <text>说明</text>
+            </view>
+            <view class="component-des-title" wx:for="{{descData}}" wx:key="index">
+                <text>{{item.parameter}}</text>
+                <text>{{item.type}}</text>
+                <text>{{item.require}}</text>
+                <text>{{item.instruction}}</text>
+            </view>
+        </view>
+        <view class="component-warn">注：如需换行则需在需要换行的文字前面加'\\n'。</view>
+    </view>
+    <view class="dialog-btn" bindtap="show">showDialog</view>
+
+    <mk-dialog id="mkDialog" title="{{title}}" content="{{content}}" bind:confirmEvent="confirmEvent" bind:cancleEvent="cancleEvent"></mk-dialog>
+</view>

@@ -1,0 +1,6 @@
+<view class="toast" hidden="{{!isShow}}">
+    <view class="toast-main">
+        <text class="toast-content">{{content}}</text>
+        <slot name="toast-more"></slot>
+    </view>
+</view>

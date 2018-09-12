@@ -1,0 +1,29 @@
+/* components/toast/toast.wxss */
+view{
+    box-sizing: border-box;
+}
+.toast{
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+.toast-main{
+    padding: 20rpx 20rpx;
+    background: rgba(0, 0, 0, .6);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 12rpx;
+    text-align: center;
+    max-width: 540rpx;
+    min-width: 314rpx;
+    line-height:40rpx;
+    white-space: nowrap;
+}
+.toast-content{
+    font-size: 24rpx;
+    color: #fff;
+}

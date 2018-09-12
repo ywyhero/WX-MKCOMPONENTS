@@ -1,0 +1,9 @@
+<view class="search">
+    <view class="search-main">
+        <icon class="search-icon" type="search" size="16"/>
+        <input class="search-input" focus="{{focus}}" bindfocus="bindfocus" bindconfirm="_confirmEvent" maxlength="{{maxlength}}" value="{{value}}" placeholder="{{placeholderVal}}" placeholder-class="placeholader-style" bindinput="bindinput" type="text" />
+        <icon class="search-close" hidden="{{!isShowClear}}" bindtap="clearInput" type="clear" size="16"/>
+    </view>
+    <view class="search-cancle" bindtap="_searchCancle" hidden="{{!isShowCancle}}">取消</view>
+</view>
+    

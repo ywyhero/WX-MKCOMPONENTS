@@ -1,0 +1,5 @@
+{
+    "usingComponents":{
+        "mk-audio": "/components/audio/audio"
+    }
+}

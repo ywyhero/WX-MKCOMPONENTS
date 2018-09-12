@@ -1,0 +1,79 @@
+/* components/dialog/dialog.wxss */
+view{
+    box-sizing: border-box;
+}
+.dialog{
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, .4);
+    z-index: 999;
+}
+.dialog-main{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 40rpx;
+    background: #fff;
+    border-radius: 6rpx;
+    width: 540rpx;
+    z-index: 1000;
+}
+.dialog-title{
+    font-size: 36rpx;
+    color: #4A4A4A;
+    margin-bottom: 20rpx;
+    padding: 0 30rpx;
+}
+.dialog-title-value{
+    font-weight: 700;
+}
+.dialog-content{
+    font-size: 28rpx;
+    color: #9B9B9B;
+    display: flex;
+    padding: 0 30rpx;
+    flex-direction: column;
+    margin-bottom: 40rpx;
+    line-height: 36rpx;
+    text-align: center;
+}
+.dialog-content-value{
+    margin-bottom: 20rpx;
+}
+.dialog-btns{
+    width: 100%;
+    border-top: 1rpx solid #E9E9E9;
+    height: 90rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.dialog-btn-cancle{
+    height: 90rpx;
+    font-size: 36rpx;
+    color: #9B9B9B;
+    letter-spacing: -0.43px;
+    text-align: center;
+    font-weight: 700;
+    flex: 1;
+    line-height: 90rpx;
+    border-right: 1rpx solid #e9e9e9;
+}
+.dialog-btn-confirm{
+    height: 90rpx;
+    font-size: 36rpx;
+    color: #FD5E02;
+    letter-spacing: -0.43px;
+    line-height: 90rpx;
+    text-align: center;
+    font-weight: 700;
+    flex: 1;
+}

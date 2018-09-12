@@ -1,0 +1,5 @@
+{
+    "usingComponents": {
+        "mk-toast": "/components/toast/toast"
+    }
+}

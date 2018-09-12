@@ -1,0 +1,31 @@
+
+<view class="component">
+    <view class="component-description">
+        <text class="component-title">Audio组件</text>
+        <view class="component-content">
+            <view class="component-des-title">
+                <text>参数</text>
+                <text>类型</text>
+                <text>必填</text>
+                <text>说明</text>
+            </view>
+            <view class="component-des-title" wx:for="{{descData}}" wx:key="index">
+                <text>{{item.parameter}}</text>
+                <text>{{item.type}}</text>
+                <text>{{item.require}}</text>
+                <text>{{item.instruction}}</text>
+            </view>
+        </view>
+        <view class="component-warn">注：如需求是只需要播放和左右拖拽进度条和播放时间功能，只需要修改组件样式即可，参数也只需传音频地址。</view>
+    </view>
+    <mk-audio 
+        id="mkAudio"
+        name="{{name}}"
+        poster="{{poster}}"
+        author="{{author}}"
+        src="{{src}}"
+        isSpeed="{{isSpeed}}"
+    ></mk-audio>
+    <view class="btn" bindtap="forward">快进5秒</view>
+    <view class="btn" bindtap="back">后退5秒</view>
+</view>

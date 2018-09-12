@@ -1,0 +1,4 @@
+.search{
+    width: 690rpx;
+    margin: 0 auto;
+}

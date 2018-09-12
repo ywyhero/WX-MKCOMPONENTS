@@ -1,0 +1,16 @@
+<view class="dialog" hidden="{{!isShow}}">
+    <view class="dialog-main">
+        <view class="dialog-title">
+            <view class="dialog-title-value">{{title}}</view>
+            <slot name="title-description"></slot>
+        </view>
+        <view class="dialog-content">
+            <text class="dialog-content-value">{{content}}</text>
+            <slot name="content-description"></slot>
+        </view>
+        <view class="dialog-btns">
+            <view class="dialog-btn-cancle" hidden="{{!cancleShow}}" catchtap="_cancleEvent">{{cancleText}}</view>
+            <view class="dialog-btn-confirm" catchtap="_confirmEvent">{{confirmText}}</view>
+        </view>
+    </view>
+</view>

@@ -1,0 +1,3 @@
+<view class="component-lists">
+	<view class="component-list" wx:for="{{lists}}" wx:key="index" data-id="{{item.id}}" catchtap="toDetail">{{item.value}}</view>
+</view>

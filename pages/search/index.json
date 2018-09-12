@@ -1,0 +1,5 @@
+{
+    "usingComponents": {
+        "mk-search": "/components/search/search"
+    }
+}

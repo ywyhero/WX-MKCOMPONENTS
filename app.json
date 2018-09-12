@@ -1,0 +1,26 @@
+{
+    "pages": [
+        
+        "pages/index/index",
+        "pages/search/index",
+        "pages/uploader/index",
+        "pages/toast/index",
+        "pages/dialog/index",
+        "pages/audio/index",
+        "pages/radio/index"
+    ],
+    "window": {
+        "navigationBarTextStyle": "#ffffff",
+        "navigationBarTitleText": "小程序组件",
+        "navigationBarBackgroundColor": "#000000",
+        "backgroundColor": "#F8F8F8"
+    },
+
+    "networkTimeout": {
+        "request": 10000,
+        "connectSocket": 10000,
+        "uploadFile": 10000,
+        "downloadFile": 10000
+    },
+    "debug": false
+}

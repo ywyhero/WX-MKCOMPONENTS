@@ -1,0 +1,5 @@
+{
+    "usingComponents": {
+        "mk-uploader": "/components/uploader/uploader"
+    }
+}

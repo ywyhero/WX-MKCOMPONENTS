@@ -1,0 +1,10 @@
+
+<view class="radio" wx:for="{{questions}}" wx:key="index">
+    <view class="radio-title">{{item.questionStr}}</view>
+    <radio-group class="radio-group" data-questionid="{{item.questionId}}" bindchange="radioChange">
+        <label class="radio-content" wx:for="{{item.answers}}" wx:for-item="itm" wx:for-index="idx" wx:key="idx">
+          <radio value="{{itm.answerId}}" checked="{{itm.hasCheck === 1}}" data-questionid="{{item.questionId}}" data-answerid="{{itm.answerId}}" data-questionindex="{{index}}" data-hascheck="{{itm.hasCheck}}" bindtap="cancleRadio" color="{{color}}"/>
+          <view class="radio-value" data-questionid="{{item.questionId}}" data-answerid="{{itm.answerId}}" data-questionindex="{{index}}" data-hascheck="{{itm.hasCheck}}" bindtap="cancleRadio" >{{itm.answerStr}}</view>
+        </label>
+    </radio-group>
+</view>
