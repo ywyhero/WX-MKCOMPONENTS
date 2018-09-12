@@ -1,14 +1,23 @@
-## 项目结构
+## 微信组件库
 
-### api
-**全局配置目录，本目录由admin维护，开发人员不得擅自改动**
+### Audio音频组件
+**支持音频自定义样式、播放、暂停、快进等功能**
 
-### config
-**项目配置目录，本目录开发者可自行配置**
- - config.js -- 项目配置管理
- - env.conf.js -- 项目环境配置
- - poject.conf.js -- 项目自定义配置，开发者根据业务自行设置
-
+### Uploader上传组件
+**目前只支持小程序上传图片到七牛云的项目**
+ - src -- 获取七牛云token的链接（后端给出）
+ - region -- 图片上传的地区
+ - header -- 调用接口时的header属性
+ - domainUrl -- 七牛云显示图片的域名
+ - header -- 调用接口时的header属性
+ - sizeType -- 图片类型
+ - sourceType -- 图片来源
+ - isCustom -- 是否需要自定义样式
+ - count -- 一次性可选择的图片数
+ - maxCount -- 可上传的最大图片数
+ - isPreview -- 是否可预览
+ - isShow -- 上传的按钮是否显示
+ 
 ### assets
 **资源目录，本目录开发者可自行配置**
  - image目录：图片资源，一些常用的比如icon，使用svg格式，单文件体大小在1-2K内；
