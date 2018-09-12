@@ -28,7 +28,7 @@
  - maxCount -- 可上传的最大图片数
  - isPreview -- 是否可预览
  - isShow -- 上传的按钮是否显示
- **注：如传maxCount，maxCount必须大于count**
+**注：如传maxCount，maxCount必须大于count**
  
 ### Toast组件
 **目前只支持换行，不支持换图**
@@ -52,6 +52,6 @@
  - cancleShow -- 是否显示取消按钮
  - confirmEvent -- 确定事件回调
  - cancleEvent -- 取消事件回调
- **注：dialog内容里自定义样式需要加<view slot="content-description"></view>**
+**注：dialog内容里自定义样式需要加<view slot="content-description"></view>**
 
 
