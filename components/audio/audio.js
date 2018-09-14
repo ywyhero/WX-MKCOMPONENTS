@@ -40,6 +40,10 @@ Component({
             type: Number,
             value: 5
         },
+        isCustom: {
+            type: Boolean,
+            value: false
+        },
         status: { // 播放状态
             type: Boolean,
             value: false
