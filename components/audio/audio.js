@@ -267,9 +267,9 @@ Component({
             this.innerAudioContext.seek(time);
            
             setTimeout(() => {    //onSeeked事件  安卓会有问题
-                innerAudioContexts.forEach(v => {
-                    v.pause();
-                })
+                // innerAudioContexts.forEach(v => {
+                //     v.pause();
+                // })
                 let status = false;
                 if(this.data.status) {
                     this.innerAudioContext.play();
