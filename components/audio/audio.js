@@ -256,7 +256,7 @@ Component({
                     total: this.data.total,
                     time: currentTime,
                     percent:  percent,
-                    isTotalTime: false
+                    hasNoTotalTime: true
                 })
                 return
             };
