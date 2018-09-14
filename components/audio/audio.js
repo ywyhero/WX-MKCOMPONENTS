@@ -244,9 +244,10 @@ Component({
             })
         },
         bindchange(e){
-            let percent;
+            let percent, currentTime;
             if(!this.data.totalTime) {
                 percent = 0;
+                currentTime = this.format(this.data.totalTime * percent / 100)
                 this.setData({
                     percent: percent
                 })
@@ -260,7 +261,7 @@ Component({
             };
             percent = e.detail.value;
             let time = Math.round(this.data.totalTime * percent / 100);
-            let currentTime = this.format(this.data.totalTime * percent / 100)
+            currentTime = this.format(this.data.totalTime * percent / 100)
             this.innerAudioContext.pause();
             this.innerAudioContext.seek(time);
            
