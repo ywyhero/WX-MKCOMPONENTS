@@ -174,10 +174,14 @@ Component({
             this.innerAudioContext.pause();
             this.innerAudioContext.seek(time); 
             setTimeout(() => {    //onSeeked事件  安卓会有问题
-                this.innerAudioContext.play();
-                this.audioPlay()
+                let status = false;
+                if(this.data.status) {
+                    this.innerAudioContext.play();
+                    this.audioPlay()
+                    status = true;
+                }
                 this.setData({
-                    status: true,
+                    status: status,
                     percent: percent,
                     time: currentTime
                 })
@@ -197,7 +201,7 @@ Component({
         forward(){
             let totalTime = this.data.totalTime;
             let seconds = this.properties.seconds;
-            if(totalTime && this.data.isFast && this.properties.status) {
+            if(totalTime && this.data.isFast) {
                 this.setData({
                     isFast: false
                 })
@@ -210,7 +214,7 @@ Component({
         back(){
             let totalTime = this.data.totalTime;
             let seconds = this.properties.seconds;
-            if(totalTime && this.data.isFast && this.properties.status) {
+            if(totalTime && this.data.isFast) {
                 this.setData({
                     isFast: false
                 })
@@ -242,6 +246,12 @@ Component({
                 this.setData({
                     percent: percent
                 })
+                this.triggerEvent('audioObj', {
+                    isLoading: false,
+                    total: this.data.total,
+                    time: currentTime,
+                    percent:  percent
+                })
                 return
             };
             percent = e.detail.value;
@@ -254,10 +264,14 @@ Component({
                 innerAudioContexts.forEach(v => {
                     v.pause();
                 })
-                this.innerAudioContext.play();
-                this.audioPlay()
+                let status = false;
+                if(this.data.status) {
+                    this.innerAudioContext.play();
+                    this.audioPlay()
+                    status = true;
+                }
                 this.setData({
-                    status: true,
+                    status: status,
                     percent: percent,
                     time: currentTime
                 })
