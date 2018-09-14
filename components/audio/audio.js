@@ -255,7 +255,8 @@ Component({
                     isLoading: false,
                     total: this.data.total,
                     time: currentTime,
-                    percent:  percent
+                    percent:  percent,
+                    isTotalTime: false
                 })
                 return
             };
