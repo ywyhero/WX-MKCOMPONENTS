@@ -134,7 +134,7 @@ Component({
                     isLoading: false,
                     total: this.data.total,
                     time: currentTime,
-                    percent: this.data.percent,
+                    percent: 100,
                     isEnd: true
                 })
             })
