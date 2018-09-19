@@ -191,6 +191,7 @@ Component({
                 this.setData({
                     status: status,
                     percent: percent,
+                    currentSeconds: time,
                     time: currentTime
                 })
                 this.triggerEvent('audioObj', {
@@ -204,6 +205,7 @@ Component({
                         isFast: true
                     })
                 }, 1000)
+                
             }, 500)
         },
         forward() {
@@ -266,6 +268,7 @@ Component({
             };
             percent = e.detail.value;
             let time = Math.round(this.data.totalTime * percent / 100);
+            let currentSeconds = this.data.totalTime * percent / 100;
             let currentTime = this.format(this.data.totalTime * percent / 100)
             this.innerAudioContext.pause();
             this.innerAudioContext.seek(time);
@@ -283,6 +286,7 @@ Component({
                 this.setData({
                     status: status,
                     percent: percent,
+                    currentSeconds: currentSeconds,
                     time: currentTime
                 })
                 this.triggerEvent('audioObj', {
