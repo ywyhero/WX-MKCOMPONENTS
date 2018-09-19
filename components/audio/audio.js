@@ -5,7 +5,7 @@ Component({
     },
     properties: {
         name: { // 音频名称
-            type: String,  
+            type: String,
             value: ''
         },
         poster: {// 音频页图片
@@ -36,7 +36,7 @@ Component({
             type: String,
             value: '#fff'
         },
-        seconds: { 
+        seconds: {
             type: Number,
             value: 5
         },
@@ -56,14 +56,15 @@ Component({
         totalTime: 0,
         isDrag: false,
         isFast: true,
+        currentSeconds: 0,
         isLoading: false
     },
-    attached(){
+    attached() {
         this.audioInit(); // 初始化
         innerAudioContexts.push(this.innerAudioContext)
     },
-    detached(){
-        if(this.innerAudioContext){
+    detached() {
+        if (this.innerAudioContext) {
             this.innerAudioContext.destroy();
         }
     },
@@ -74,16 +75,16 @@ Component({
             let currentSecond = Math.round(time - Math.floor(time / 60) * 60);
             min = this.padStartZero(Math.floor(currentTime / 60));
             sec = this.padStartZero(currentSecond === 60 ? 0 : currentSecond);
-            return min + ':' +sec;
+            return min + ':' + sec;
         },
         padStartZero(num) {
-            if(num < 10) {
+            if (num < 10) {
                 num = '0' + num
-            } 
+            }
             return num;
         },
-        audioInit(){
-            if(this.innerAudioContext){
+        audioInit() {
+            if (this.innerAudioContext) {
                 this.innerAudioContext.destroy();
             }
             this.innerAudioContext = wx.createInnerAudioContext();
@@ -102,7 +103,7 @@ Component({
                     isLoading: true,
                     total: this.data.total,
                     time: this.data.currentTime,
-                    percent:  this.data.percent,
+                    percent: this.data.percent,
                 })
             })
             this.innerAudioContext.onCanplay(() => {
@@ -113,14 +114,14 @@ Component({
                     isLoading: false,
                     total: this.data.total,
                     time: this.data.time,
-                    percent:  this.data.percent,
+                    percent: this.data.percent,
                 })
             })
             this.audioPlay();
             this.innerAudioContext.onEnded(() => {
                 let total = this.data.total;
                 let currentTime = this.data.time;
-                if( total !== currentTime) {
+                if (total !== currentTime) {
                     currentTime = total
                 }
                 this.innerAudioContext.destroy();
@@ -133,7 +134,7 @@ Component({
                     isLoading: false,
                     total: this.data.total,
                     time: currentTime,
-                    percent:  this.data.percent,
+                    percent: this.data.percent,
                     isEnd: true
                 })
             })
@@ -142,7 +143,7 @@ Component({
                 console.log(res.errCode)
             })
         },
-        audioPlay(){
+        audioPlay() {
             this.innerAudioContext.offPlay();
             this.innerAudioContext.offTimeUpdate();
             this.innerAudioContext.onPlay(() => {
@@ -152,13 +153,16 @@ Component({
                 this.innerAudioContext.onTimeUpdate(() => {
                     let total = this.innerAudioContext.duration;
                     let currentTime = null;
+                    let currentSeconds = null;
                     currentTime = this.innerAudioContext.currentTime;
+                    currentSeconds = this.innerAudioContext.currentTime;
                     let percent = Math.round(currentTime) / Math.round(total) * 100;
                     total = this.format(total);
                     currentTime = this.format(currentTime);
                     this.setData({
                         totalTime: this.innerAudioContext.duration,
                         total: total,
+                        currentSeconds: currentSeconds,
                         time: currentTime,
                         percent: Math.round(percent),
                     })
@@ -171,15 +175,15 @@ Component({
                 })
             })
         },
-        
-        seekTime(totalTime, time, percent){
+
+        seekTime(totalTime, time, percent) {
             let currentTime = this.format(time);
-            percent =  Math.round(time) / Math.round(totalTime) * 100;
+            percent = Math.round(time) / Math.round(totalTime) * 100;
             this.innerAudioContext.pause();
-            this.innerAudioContext.seek(time); 
+            this.innerAudioContext.seek(time);
             setTimeout(() => {    //onSeeked事件  安卓会有问题
                 let status = false;
-                if(this.data.status) {
+                if (this.data.status) {
                     this.innerAudioContext.play();
                     this.audioPlay()
                     status = true;
@@ -193,41 +197,42 @@ Component({
                     isLoading: false,
                     total: this.data.total,
                     time: currentTime,
-                    percent:  percent,
+                    percent: percent,
                 })
                 setTimeout(() => {
                     this.setData({
                         isFast: true
                     })
                 }, 1000)
-            },500)
+            }, 500)
         },
-        forward(){
+        forward() {
             let totalTime = this.data.totalTime;
             let seconds = this.properties.seconds;
-            if(totalTime && this.data.isFast) {
+            let currentSeconds = this.data.currentSeconds;
+            if (totalTime && this.data.isFast) {
                 this.setData({
                     isFast: false
                 })
                 let percent = this.data.percent;
-                let time = Math.round(totalTime * percent / 100) + seconds  > totalTime ? totalTime :  Math.round(totalTime * percent / 100) + seconds;
+                let time = Math.round(currentSeconds) + seconds > totalTime ? totalTime : Math.round(currentSeconds) + seconds;
                 this.seekTime(totalTime, time, percent)
             }
-            
         },
-        back(){
+        back() {
             let totalTime = this.data.totalTime;
+            let currentSeconds = this.data.currentSeconds;
             let seconds = this.properties.seconds;
-            if(totalTime && this.data.isFast) {
+            if (totalTime && this.data.isFast) {
                 this.setData({
                     isFast: false
                 })
                 let percent = this.data.percent;
-                let time = Math.round(totalTime * percent / 100) -  seconds < 0 ? 0 :  Math.round(totalTime * percent / 100) - seconds;
+                let time = Math.round(currentSeconds) - seconds < 0 ? 0 : Math.round(currentSeconds) - seconds;
                 this.seekTime(totalTime, time, percent)
             }
         },
-        bindchanging(e){
+        bindchanging(e) {
             let percent = e.detail.value;
             this.innerAudioContext.pause();
             let currentTime = this.format(this.data.totalTime * percent / 100)
@@ -240,14 +245,13 @@ Component({
                 isLoading: false,
                 total: this.data.total,
                 time: currentTime,
-                percent:  percent,
+                percent: percent,
             })
         },
-        bindchange(e){
-            let percent, currentTime;
-            if(!this.data.totalTime) {
+        bindchange(e) {
+            let percent;
+            if (!this.data.totalTime) {
                 percent = 0;
-                currentTime = this.format(this.data.totalTime * percent / 100)
                 this.setData({
                     percent: percent
                 })
@@ -255,23 +259,23 @@ Component({
                     isLoading: false,
                     total: this.data.total,
                     time: currentTime,
-                    percent:  percent,
+                    percent: percent,
                     hasNoTotalTime: true
                 })
                 return
             };
             percent = e.detail.value;
             let time = Math.round(this.data.totalTime * percent / 100);
-            currentTime = this.format(this.data.totalTime * percent / 100)
+            let currentTime = this.format(this.data.totalTime * percent / 100)
             this.innerAudioContext.pause();
             this.innerAudioContext.seek(time);
-           
+
             setTimeout(() => {    //onSeeked事件  安卓会有问题
                 // innerAudioContexts.forEach(v => {
                 //     v.pause();
                 // })
                 let status = false;
-                if(this.data.status) {
+                if (this.data.status) {
                     this.innerAudioContext.play();
                     this.audioPlay()
                     status = true;
@@ -285,26 +289,26 @@ Component({
                     isLoading: false,
                     total: this.data.total,
                     time: currentTime,
-                    percent:  percent,
+                    percent: percent,
                 })
             }, 500)
         },
-        playClick(){
+        playClick() {
             this.innerAudioContext.play();
         },
-        pauseClick(){
+        pauseClick() {
             this.innerAudioContext.pause();
         },
-        play(){
+        play() {
             innerAudioContexts.forEach(v => {
                 v.pause();
             })
             this.setData({
                 status: !this.data.status
             })
-            if(this.data.status){
+            if (this.data.status) {
                 this.playClick();
-                
+
             } else {
                 this.pauseClick();
             }
@@ -312,7 +316,7 @@ Component({
                 isLoading: false,
                 total: this.data.total,
                 time: this.data.time,
-                percent:  this.data.percent,
+                percent: this.data.percent,
             })
         }
     }
