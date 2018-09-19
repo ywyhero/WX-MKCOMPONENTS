@@ -110,12 +110,12 @@ Component({
                 this.setData({
                     isLoading: false
                 })
-                this.triggerEvent('audioObj', {
-                    isLoading: false,
-                    total: this.data.total,
-                    time: this.data.time,
-                    percent: this.data.percent,
-                })
+                // this.triggerEvent('audioObj', {
+                //     isLoading: false,
+                //     total: this.data.total,
+                //     time: this.data.time,
+                //     percent: this.data.percent,
+                // })
             })
             this.audioPlay();
             this.innerAudioContext.onEnded(() => {
