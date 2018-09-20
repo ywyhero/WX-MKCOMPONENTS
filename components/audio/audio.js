@@ -128,13 +128,15 @@ Component({
                 this.audioInit();
                 this.setData({
                     time: currentTime,
-                    status: false
+                    status: false,
+                    currentSeconds: this.data.totalTime,
+                    percent: 100
                 })
                 this.triggerEvent('audioObj', {
                     isLoading: false,
                     total: this.data.total,
                     time: currentTime,
-                    percent: 100,
+                    percent: this.data.percent,
                     isEnd: true
                 })
             })
@@ -205,7 +207,6 @@ Component({
                         isFast: true
                     })
                 }, 1000)
-                
             }, 500)
         },
         forward() {
@@ -223,7 +224,7 @@ Component({
         },
         back() {
             let totalTime = this.data.totalTime;
-            let currentSeconds = this.data.currentSeconds;
+            let currentSeconds = Math.round(this.data.currentSeconds);
             let seconds = this.properties.seconds;
             if (totalTime && this.data.isFast) {
                 this.setData({
@@ -231,6 +232,7 @@ Component({
                 })
                 let percent = this.data.percent;
                 let time = Math.round(currentSeconds) - seconds < 0 ? 0 : Math.round(currentSeconds) - seconds;
+                console.log(time)
                 this.seekTime(totalTime, time, percent)
             }
         },
@@ -268,7 +270,6 @@ Component({
             };
             percent = e.detail.value;
             let time = Math.round(this.data.totalTime * percent / 100);
-            let currentSeconds = this.data.totalTime * percent / 100;
             let currentTime = this.format(this.data.totalTime * percent / 100)
             this.innerAudioContext.pause();
             this.innerAudioContext.seek(time);
@@ -286,7 +287,6 @@ Component({
                 this.setData({
                     status: status,
                     percent: percent,
-                    currentSeconds: currentSeconds,
                     time: currentTime
                 })
                 this.triggerEvent('audioObj', {
