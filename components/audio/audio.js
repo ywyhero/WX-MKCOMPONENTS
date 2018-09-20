@@ -138,6 +138,7 @@ Component({
             this.innerAudioContext.onError((res) => {
                 console.log(res.errMsg)
                 console.log(res.errCode)
+                this.triggerEvent('onError')
             })
         },
         audioPlay() {
