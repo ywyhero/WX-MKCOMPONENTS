@@ -1,0 +1,14 @@
+<view class="nav" style="height: {{navHeight}}px;background: {{navigationBackgroundStyle}}">
+    <view class="nav-main">
+        <view class="nav-icon" wx:if="{{isToHome}}" catchtap="toHome">
+            <image src="./images/btn_home_black.png" class="nav-home"></image>
+        </view>
+        <view class="nav-icon active"  wx:if="{{!isFirst}}" catchtap="toBack">
+            <image src="./images/ic_nav_back.png" class="nav-back"></image>
+        </view>
+        <view class="nav-value" style="background: {{navigationBackgroundStyle}}">
+            <view class="nav-text" style="color: {{navigationTitleStyle}}">{{navigationBarTitleText}}</view>
+        </view>
+    </view>
+
+</view>

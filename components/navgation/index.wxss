@@ -1,0 +1,89 @@
+view {
+  box-sizing: border-box;
+}
+page{
+  padding-top: 128rpx;
+}
+@media (height: 812px) {
+  page{
+    padding-top: 178rpx;
+  }
+}
+.nav {
+  position: fixed;
+  top: 0;
+  z-index: 9999;
+  width: 750rpx;
+  height: 46px;
+  background: #fff;
+  padding-top: 36rpx;
+}
+
+.nav-main {
+  color: #fff;
+  display: flex;
+  height: 46px;
+  align-items: center;
+}
+
+.nav-icon {
+  position: absolute;
+  left: 10px;
+  bottom: 7px;
+  z-index: 100;
+  line-height: 1;
+  padding-top: 4px;
+  z-index: 10000;
+  width:90rpx;
+  height:46px;
+  display:flex;
+  align-items:flex-end;
+}
+.nav-icon.active{
+  padding-bottom: 7px
+}
+.nav-value {
+  position: absolute;
+  left: 0;
+  width: 750rpx;
+  height: 46px;
+  line-height: 46px;
+  color: #4a4a4a;
+  font-size: 36rpx;
+  height: 46px;
+  line-height: 46px;
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  background-color: #fff;
+  color: #333;
+}
+
+.nav-text {
+  max-width: 370rpx;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-align: center;
+  height: 46px;
+  line-height: 46px;
+  margin: 0 auto;
+  font-weight:700;
+
+}
+
+.nav-home {
+  width: 60rpx;
+  height: 60rpx;
+  margin-left: 20rpx;
+  z-index: 101;
+}
+
+.nav-back {
+  width: 22rpx;
+  height: 36rpx;
+  margin-left: 20rpx;
+  z-index: 101;
+}

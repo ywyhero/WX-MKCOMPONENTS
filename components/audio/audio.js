@@ -17,7 +17,26 @@ Component({
         },
         src: { // 音频地址
             type: String,
-            value: ''
+            value: '',
+            observer(newVal, oldVal, changedPath) {
+                if (newVal === '') {
+                    wx.showToast({
+                        title: 'src不能为空',
+                        icon: 'none'
+                    })
+                    return
+                }
+                if (newVal !== oldVal && newVal !== '') {
+                    this.setData({
+                        time: '00:00',
+                        total: "00:00",
+                        percent: 0,
+                        status: !this.data.status
+                    })
+                    this.audioInit()
+                    this.play()
+                }
+            }
         },
         isSpeed: { // 是否使用拖拽加速
             type: Boolean,
@@ -56,10 +75,11 @@ Component({
         isDrag: false,
         isFast: true,
         currentSeconds: 0,
-        isLoading: false
+        isLoading: false,
+        bindStatus: false
     },
     attached() {
-        this.audioInit(); // 初始化
+        // this.audioInit(); // 初始化
     },
     detached() {
         if (this.innerAudioContext) {
@@ -86,18 +106,17 @@ Component({
                 this.innerAudioContext.destroy();
             }
             this.innerAudioContext = wx.createInnerAudioContext();
-            console.log(this.properties.src)
             this.innerAudioContext.src = this.properties.src;
-            console.log(this.innerAudioContext.offCanplay)
             this.innerAudioContext.offCanplay();
+            this.innerAudioContext.offPause();
             this.innerAudioContext.offEnded();
             this.innerAudioContext.offError();
-
             this.innerAudioContext.onWaiting(() => {
                 this.setData({
                     isLoading: true
                 })
                 this.triggerEvent('audioObj', {
+                    status: this.data.status,
                     isLoading: true,
                     total: this.data.total,
                     time: this.data.time,
@@ -109,6 +128,7 @@ Component({
                     isLoading: false
                 })
                 this.triggerEvent('audioObj', {
+                    status: this.data.status,
                     isLoading: false,
                     total: this.data.total,
                     time: this.data.time,
@@ -116,22 +136,33 @@ Component({
                 })
             })
             this.audioPlay();
+            this.innerAudioContext.onPause(() => {
+                this.setData({
+                    status: false
+                })
+                this.triggerEvent('audioObj', {
+                    status: this.data.status,
+                    total: this.data.total,
+                    time: this.data.time,
+                    percent: this.data.percent,
+                })
+            })
             this.innerAudioContext.onEnded(() => {
-               this.playEnd()
+                this.playEnd()
             })
             this.innerAudioContext.onError((res) => {
-                console.log(res.errMsg)
-                console.log(res.errCode)
+                // console.log(res.errMsg)
+                // console.log(res.errCode)
                 this.triggerEvent('onError')
             })
         },
-        playEnd(){
+        playEnd() {
             let total = this.data.total;
             let currentTime = this.data.time;
             if (total !== currentTime) {
                 currentTime = total
             }
-            this.innerAudioContext.destroy();
+            // this.innerAudioContext.destroy();
             this.audioInit();
             this.setData({
                 time: currentTime,
@@ -141,6 +172,7 @@ Component({
             })
             this.triggerEvent('audioObj', {
                 isLoading: false,
+                status: this.data.status,
                 total: this.data.total,
                 time: currentTime,
                 percent: this.data.percent,
@@ -160,22 +192,23 @@ Component({
                     let currentSeconds = null;
                     currentTime = this.innerAudioContext.currentTime;
                     currentSeconds = this.innerAudioContext.currentTime;
-                    if(currentSeconds > total || currentTime > total){
+                    if (currentSeconds > total || currentTime > total) {
                         currentSeconds = total
                         currentTime = total
                     }
                     let percent = Math.round(currentTime) / Math.round(total) * 100;
                     total = this.format(total);
                     currentTime = this.format(currentTime);
-                    console.log(currentTime)
                     this.setData({
                         totalTime: this.innerAudioContext.duration,
                         total: total,
                         currentSeconds: currentSeconds,
                         time: currentTime,
+                        status: this.data.status,
                         percent: Math.round(percent),
                     })
                     this.triggerEvent('audioObj', {
+                        status: this.data.status,
                         isLoading: false,
                         total: total,
                         time: currentTime,
@@ -204,6 +237,7 @@ Component({
                     time: currentTime
                 })
                 this.triggerEvent('audioObj', {
+                    status: this.data.status,
                     isLoading: false,
                     total: this.data.total,
                     time: currentTime,
@@ -220,7 +254,7 @@ Component({
             let totalTime = this.data.totalTime;
             let seconds = this.properties.seconds;
             let currentSeconds = this.data.currentSeconds;
-            if(totalTime === currentSeconds) return;
+            if (totalTime === currentSeconds) return;
             if (totalTime && this.data.isFast) {
                 this.setData({
                     isFast: false
@@ -233,7 +267,7 @@ Component({
         back() {
             let totalTime = this.data.totalTime;
             let currentSeconds = Math.round(this.data.currentSeconds);
-            if(currentSeconds === 0) return;
+            if (currentSeconds === 0) return;
             let seconds = this.properties.seconds;
             if (totalTime && this.data.isFast) {
                 this.setData({
@@ -255,6 +289,7 @@ Component({
             })
             this.triggerEvent('audioObj', {
                 isLoading: false,
+                status: this.data.status,
                 total: this.data.total,
                 time: currentTime,
                 percent: percent,
@@ -269,6 +304,7 @@ Component({
                 })
                 this.triggerEvent('audioObj', {
                     isLoading: false,
+                    status: this.data.status,
                     total: this.data.total,
                     time: this.data.time,
                     percent: percent,
@@ -279,32 +315,38 @@ Component({
             percent = e.detail.value;
             let time = Math.round(this.data.totalTime * percent / 100);
             let currentTime = this.format(this.data.totalTime * percent / 100)
+            let bindStatus = this.data.bindStatus;
+            let status = false;
             this.innerAudioContext.pause();
             this.innerAudioContext.seek(time);
-
+            this.setData({
+                percent: percent
+            })
             setTimeout(() => {    //onSeeked事件  安卓会有问题
-                let status = false;
-                if (this.data.status) {
+                if (bindStatus) {
                     this.innerAudioContext.play();
                     this.audioPlay()
                     status = true;
+                } else {
+                    status = false;
                 }
                 this.setData({
                     status: status,
-                    percent: percent,
                     time: currentTime
                 })
-                if(percent === 100){
+                if (percent === 100) {
+                    this.innerAudioContext.pause();
                     this.playEnd()
                 } else {
                     this.triggerEvent('audioObj', {
+                        status: this.data.status,
                         isLoading: false,
                         total: this.data.total,
                         time: currentTime,
                         percent: percent,
                     })
                 }
-               
+
             }, 500)
         },
         playClick() {
@@ -314,17 +356,22 @@ Component({
             this.innerAudioContext.pause();
         },
         play() {
-            this.setData({
-                status: !this.data.status
-            })
-            if (this.data.status) {
+            let bindStatus = false;
+            let status = !this.data.status
+            if (status) {
                 this.playClick();
-
+                bindStatus = true
             } else {
                 this.pauseClick();
+                bindStatus = false
             }
+            this.setData({
+                bindStatus,
+                status: !this.data.status
+            })
             this.triggerEvent('audioObj', {
                 isLoading: false,
+                status: this.data.status,
                 total: this.data.total,
                 time: this.data.time,
                 percent: this.data.percent,

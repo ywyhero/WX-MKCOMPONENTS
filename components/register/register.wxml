@@ -1,0 +1,32 @@
+<view class="register">
+    <view class="register-title">
+        <image src="./images/title.png" class="register-title-img"></image>
+    </view>
+    <view class="register-description">未注册VIP陪练账号的手机号，登录时将自动注册</view>
+    <view class="register-box">
+        <view class="register-zone">
+            <view class="register-zone-code">{{zoneCode}}</view>
+            <image class="register-zone-icon" src="./images/ic_sign_in_open@2x.png"></image>
+        </view>
+        <input type="number" value="{{telephoneVal}}" class="register-input" bindinput="inputEvent" placeholder="请输入手机号" placeholder-class="register-input-placeholder"/>
+        <icon type="clear" size="16" hidden="{{!isTelephoneShow}}" bindtap="clearTelephoneEvent"/>
+    </view>
+    <view class="register-box">
+        <input type="number" maxlength="6" class="register-input" value="{{codeValue}}" bindinput="codeInputEvent" placeholder="请输入手机验证码" placeholder-class="register-input-placeholder"/>
+        <icon type="clear" size="16" hidden="{{!isCodeShow}}" bindtap="clearCodeEvent"/>
+        <view class="register-code-btn {{isLoading ? 'active' : ''}}" bindtap="getCodeEvent">{{codeVal}}</view>
+    </view>
+    <view class="register-box" wx:if="{{nameShow}}">
+        <input type="text" class="register-input" value="{{nameVal}}" bindinput="nameInputEvent" placeholder="请输入您家小演奏家的名字" placeholder-class="register-input-placeholder"/>
+        <icon type="clear" size="16" hidden="{{!isNameShow}}" bindtap="clearNameEvent"/>
+    </view>
+    <view class="register-box register-btn {{isCanClick ? 'active' : ''}}" bindtap="loginEvent">登录</view>
+    <view class="register-no-code" bindtap="toTelephone">
+        <image class="register-no-code-icon" src="./images/ic__@2x.png"></image>
+        <view class="register-no-code-val">未收到验证码</view>
+    </view>
+    <view class="register-argeement">
+        <icon type="success" size="16" color="{{isChecked ? selectColor : noSelectColor}}" bindtap="checkEvent"/>
+        <view class="register-argeement-val">我已阅读并同意《VIP陪练服务协议》</view>
+    </view>
+</view>
