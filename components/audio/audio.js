@@ -151,8 +151,6 @@ Component({
                 this.playEnd()
             })
             this.innerAudioContext.onError((res) => {
-                // console.log(res.errMsg)
-                // console.log(res.errCode)
                 this.triggerEvent('onError')
             })
         },
@@ -167,6 +165,7 @@ Component({
             this.setData({
                 time: currentTime,
                 status: false,
+                bindStatus: false,
                 currentSeconds: this.data.totalTime,
                 percent: 100
             })
@@ -187,6 +186,10 @@ Component({
                     isLoading: false
                 })
                 this.innerAudioContext.onTimeUpdate(() => {
+                    if(!this.data.status) {
+                        this.innerAudioContext.pause();
+                        return
+                    }
                     let total = this.innerAudioContext.duration;
                     let currentTime = null;
                     let currentSeconds = null;
@@ -351,23 +354,8 @@ Component({
         },
         playClick() {
             this.innerAudioContext.play();
-        },
-        pauseClick() {
-            this.innerAudioContext.pause();
-        },
-        play() {
-            let bindStatus = false;
-            let status = !this.data.status
-            if (status) {
-                this.playClick();
-                bindStatus = true
-            } else {
-                this.pauseClick();
-                bindStatus = false
-            }
             this.setData({
-                bindStatus,
-                status: !this.data.status
+                bindStatus: true
             })
             this.triggerEvent('audioObj', {
                 isLoading: false,
@@ -376,6 +364,30 @@ Component({
                 time: this.data.time,
                 percent: this.data.percent,
             })
+        },
+        pauseClick() {
+            this.innerAudioContext.pause();
+            this.setData({
+                bindStatus: false
+            })
+            this.triggerEvent('audioObj', {
+                isLoading: false,
+                status: this.data.status,
+                total: this.data.total,
+                time: this.data.time,
+                percent: this.data.percent,
+            })
+        },
+        play() {
+            let status = !this.data.status;
+            this.setData({
+                status
+            })
+            if (status) {
+                this.playClick();
+            } else {
+                this.pauseClick();
+            }
         }
     }
 })
