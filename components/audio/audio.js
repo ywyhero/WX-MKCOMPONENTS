@@ -188,6 +188,9 @@ Component({
                 this.innerAudioContext.onTimeUpdate(() => {
                     if(!this.data.status) {
                         this.innerAudioContext.pause();
+                        this.setData({
+                            bindStatus: false
+                        })
                         return
                     }
                     let total = this.innerAudioContext.duration;
