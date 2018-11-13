@@ -2,27 +2,29 @@ view{
     box-sizing: border-box;
 }
 .uploader-main{
-    width:710rpx;
+    /* width:710rpx; */
     background:#fff;
     margin:0 auto 20rpx;
-    padding:0rpx 30rpx;
+    /* padding:0rpx 30rpx; */
     display:flex;
     flex-flow: wrap;
 }
 .uploader-image{
     width:144rpx;
     height:144rpx;
-    margin-right:24rpx;
+    /* margin-right:24rpx; */
     margin-bottom:20rpx;
     border-radius:6rpx;
 }
 .uploader-main > image:nth-of-type(4n){
     margin-right:0rpx;
 }
+.uploader-image-default{
+    background: url('https://user-gold-cdn.xitu.io/2018/8/23/165661d1b02c0807') center center no-repeat;
+}
 .uploader-add{
     width:144rpx;
     height:144rpx;
-    margin-right:24rpx;
     margin-bottom:20rpx;
     border-radius:6rpx;
 }

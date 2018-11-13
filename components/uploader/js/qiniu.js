@@ -41,7 +41,6 @@ function qiniu(filePaths, options) {
         let promiseTemp = function () {
             return new Promise((resolve) => {
                 qiniuUploader.upload(filePath, (res) => {
-                    wx.hideLoading();
                     resolve(res)
                 }, (error) => {
                     console.error('error: ' + JSON.stringify(error));
@@ -53,6 +52,7 @@ function qiniu(filePaths, options) {
         } 
         promiseFuncArr.push(promiseTemp)
     }
+   
     return sequenceTasks(promiseFuncArr)
 }
 

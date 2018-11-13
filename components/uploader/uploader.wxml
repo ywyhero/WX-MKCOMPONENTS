@@ -1,6 +1,6 @@
 <view class="uploader">
     <view class="uploader-main" wx:if="{{!isCustom}}">
-        <image wx:for="{{uploaderImgs}}" catchtap="previewImg" data-current="{{index}}" wx:key="index" class="uploader-image" mode="aspectFill" src="{{item.imageURL}}"></image>
+        <image wx:for="{{uploaderImgs}}" catchtap="previewImg" data-current="{{index}}" wx:key="index" class="uploader-image uploader-image-default uploader-class" mode="aspectFill" src="{{item.url}}"></image>
         <image class="uploader-add" hidden="{{!isShow}}" mode="aspectFill" catchtap="uploaderAdd" src="./images/ic_add.png"></image>
     </view>
     <slot name="uploader-custom"></slot>

@@ -3,6 +3,7 @@ Component({
     options: {
         multipleSlots: true // 在组件定义时的选项中启用多slot支持
     },
+    externalClasses: ["uploader-class"],
     properties: {
         region: { // 上传的地区
             type: 'String',
@@ -30,7 +31,7 @@ Component({
         },
         isPreview: { // 是否可预览
             type: Boolean,
-            value: true
+            value: false
         },
         maxCount: { // 总共可上传的图片数
             type: Number,
@@ -43,6 +44,10 @@ Component({
         isCustom: { //是否自定义样式
             type: Boolean,
             value: false
+        },
+        uploaderImgs: {
+            type: Array,
+            value: []
         },
         isShow: {
             type: Boolean,
@@ -81,9 +86,8 @@ Component({
                             domainUrl: domainUrl,
                         }
                         if(maxCount && maxCount > count){
-                            count = (maxCount - count < count) ? count : (maxCount - count)
+                            count = maxCount - uploaderImgs.length
                         }
-                       
                         wx.chooseImage({
                             count: count,
                             sizeType: sizeType,
@@ -99,11 +103,8 @@ Component({
                                                 isShow: false
                                             })
                                         }
-                                        
                                     }
-                                    this.setData({
-                                        uploaderImgs: uploaderImgs
-                                    })
+                                    wx.hideLoading();
                                     this.triggerEvent('uploaderUrls', data)
                                 })
                             },
@@ -114,12 +115,26 @@ Component({
                             } 
                         })
                     },
+                    fail: error => {
+                        wx.showModal({
+                            title: '',
+                            content: '网络不稳定，请重试',
+                            confirmText: '确定',
+                            confirmColor: "#FD5E02",
+                            cancelColor: '#9B9B9B',
+                            success: (res) => {
+                                if(res.confirm){
+                                    this.uploaderAdd()
+                                }
+                            }
+                        });
+                    }
                 })
             } 
         },
         previewImg(e) {
+            let current = e.currentTarget.dataset.current;
             if(this.properties.isPreview){
-                let current = e.currentTarget.dataset.current;
                 let uploaderImgs = this.data.uploaderImgs;
                 let urls = [];
                 uploaderImgs.map(v => {
@@ -129,6 +144,8 @@ Component({
                     current: current,
                     urls: urls
                 })
+            } else {
+                this.triggerEvent("previewCustom", {current: current})
             }
         }
     }
