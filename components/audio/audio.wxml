@@ -1,25 +1,25 @@
 <view>
-    <view class="audio" wx:if="{{!isCustom}}">
-        <view class="audio-left">
-            <image mode="aspectFill" class="audio-left-bg" src="{{poster}}"></image>
-            <image mode="aspectFill" hidden="{{isLoading}}" catchtap="play" class="audio-left-play" src="{{status ? './images/pause.png' : './images/play.png' }}"></image>
-            <image mode="aspectFill" hidden="{{!isLoading}}" class="audio-left-play" src="./images/loading.gif"></image>
-        </view>
-        <view class="audio-right">
-            <view class="audio-content">
-                <view class="audio-right-content">
-                    <view class="audio-right-top">
-                        <view class="audio-name">{{name}}</view>
-                        <view class="audio-time">{{time}}/{{total}}</view>
-                    </view>
-                    <view class="audio-right-bottom">{{author}}</view>
-                </view>
-            </view>
-            <view class="audio-progress">
-                <progress wx:if="{{!isSpeed}}" class="audio-percent" activeColor="{{activeColor}}" active-mode="forwards" percent="{{percent}}" stroke-width="1" />
-                <slider wx:if="{{isSpeed}}" activeColor="{{activeColor}}" block-color="{{blockColor}}" bindchanging="bindchanging" bindchange="bindchange" value="{{percent}}" block-size="12" step="2"/>
-            </view>
-        </view>
+  <view class="audio" wx:if="{{!isCustom}}">
+    <view class="audio-left">
+      <image mode="aspectFill" class="audio-left-bg" src="{{poster}}"></image>
+      <image mode="aspectFill" hidden="{{isLoading}}" catchtap="play" class="audio-left-play" src="{{status ? './images/pause.png' : './images/play.png' }}"></image>
+      <image mode="aspectFill" hidden="{{!isLoading}}" class="audio-left-play" src="./images/loading.gif"></image>
     </view>
-    <slot name="aduio-custom"></slot>
-</view> 
+    <view class="audio-right">
+      <view class="audio-content">
+        <view class="audio-right-content">
+          <view class="audio-right-top">
+            <view class="audio-name">{{name}}</view>
+            <view class="audio-time">{{time}}/{{total}}</view>
+          </view>
+          <view class="audio-right-bottom">{{author}}</view>
+        </view>
+      </view>
+      <view class="audio-progress">
+        <progress wx:if="{{!isSpeed}}" class="audio-percent" activeColor="{{activeColor}}" active-mode="forwards" percent="{{percent}}" stroke-width="1" />
+        <slider wx:if="{{isSpeed}}" activeColor="{{activeColor}}" block-color="{{blockColor}}" bindchanging="bindchanging" bindchange="bindchange" value="{{percent}}" block-size="12" step="2" />
+      </view>
+    </view>
+  </view>
+  <slot name="aduio-custom"></slot>
+</view>
