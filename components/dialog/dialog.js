@@ -26,7 +26,36 @@ Component({
         cancleShow: {
             type: Boolean,
             value: true
+        },
+        isNavigate: {
+            type: Boolean,
+            value: false
+        },
+        extraData: {
+            type: Object,
+            value: {}
+        },
+        target: {
+            type: String,
+            value: 'miniProgram'
+        },
+        openType: {
+            type: String,
+            value: 'navigate'
+        },
+        appId: {
+            type: String,
+            value: ''
+        },
+        path: {
+            type: String,
+            value: ''
+        },
+        version: {
+            type: String,
+            value: 'develop'
         }
+
     },
 
     /**
@@ -55,6 +84,12 @@ Component({
         },
         _cancleEvent(){
             this.triggerEvent('cancleEvent')
+        },
+        _successEvent() {
+            this.triggerEvent('successEvent')
+        },
+        _failEvent() {
+            this.triggerEvent('failEvent')
         }
     }
 })

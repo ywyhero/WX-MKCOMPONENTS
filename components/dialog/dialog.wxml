@@ -10,7 +10,8 @@
         </view>
         <view class="dialog-btns">
             <view class="dialog-btn-cancle" hidden="{{!cancleShow}}" catchtap="_cancleEvent">{{cancleText}}</view>
-            <view class="dialog-btn-confirm" catchtap="_confirmEvent">{{confirmText}}</view>
+            <navigator  wx:if="{{isNavigate}}" target="{{target}}" open-type="{{openType}}" path="{{path}}" version="{{version}}" app-id="{{appId}}" extra-data="{{extraData}}" bindsuccess="_successEvent" bindfail="_failEvent" class="dialog-btn-confirm">{{confirmText}}</navigator>
+            <view wx:else class="dialog-btn-confirm" catchtap="_confirmEvent">{{confirmText}}</view>
         </view>
     </view>
 </view>
