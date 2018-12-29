@@ -1,0 +1,3 @@
+<view>
+    <slot name="background-audio-custom"></slot>
+</view>    
