@@ -39,12 +39,11 @@ Component({
             this.audioInit()
           } else {
             if (status) {
-              this.audioPlay()
-              this.playAudio();
+              this.addSeconds()
               // 页面重新进入后不会自动更新数据
-              timer = setInterval(() => { 
-                if(status) {
-                  this.playAudio();
+              timer = setInterval(() => {
+                if (status) {
+                  this.addSeconds()
                 } else {
                   clearInterval(timer)
                 }
@@ -67,6 +66,24 @@ Component({
     }
   },
   methods: {
+    addSeconds() {
+      currentTime = currentTime + 1;
+      if (currentTime >= totalTime) {
+        clearInterval(timer)
+        this.loopPlay()
+        return
+      }
+      currentSeconds = this.format(currentTime)
+      percent = Math.round(currentTime) / Math.round(totalTime) * 100;
+      this.triggerEvent('audioData', {
+        isLoading: false,
+        currentSeconds,
+        total,
+        status,
+        percent,
+        change: 9
+      })
+    },
     format(time) {
       let min, sec;
       let currentTime = Math.round(time)
@@ -255,7 +272,7 @@ Component({
       })
       backgroundAudio.play();
       // 当暂停音频后，重新进入页面，初始化音频不然数据更新不了
-      if(navigateBack) {
+      if (navigateBack) {
         navigateBack = false
         this.audioInit(currentTime)
       }
