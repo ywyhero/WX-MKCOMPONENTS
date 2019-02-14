@@ -9,6 +9,7 @@ let bindStatus = true
 let backgroundClose = false
 let timer = null
 let navigateBack = false
+let isSame = false
 Component({
   options: {
     multipleSlots: true // 在组件定义时的选项中启用多slot支持
@@ -18,11 +19,16 @@ Component({
       type: String,
       value: ''
     },
+    coverImgUrl: {
+      type: String,
+      value: ''
+    },
     audioUrl: {
       type: String,
       value: '',
       observer(newVal, oldVal) {
         if (newVal !== oldVal && newVal !== '' && oldVal !== '') {
+          isSame = false
           this.audioInit()
         }
       }
@@ -37,17 +43,11 @@ Component({
           let dataUrl = res.dataUrl;
           if (dataUrl !== this.properties.audioUrl) {
             this.audioInit()
+            isSame = false
           } else {
+            isSame = true
             if (status) {
-              this.addSeconds()
-              // 页面重新进入后不会自动更新数据
-              timer = setInterval(() => {
-                if (status) {
-                  this.addSeconds()
-                } else {
-                  clearInterval(timer)
-                }
-              }, 1000)
+              this.setInterEvent()
             } else {
               this.pauseAudio()
               navigateBack = true
@@ -56,6 +56,9 @@ Component({
         }
       })
     }
+  },
+  detached() {
+    clearInterval(timer)
   },
   pageLifetimes: {
     show() {
@@ -67,7 +70,7 @@ Component({
   },
   methods: {
     addSeconds() {
-      currentTime = currentTime + 1;
+      currentTime = Math.floor(currentTime + 1);
       if (currentTime >= totalTime) {
         clearInterval(timer)
         this.loopPlay()
@@ -81,8 +84,18 @@ Component({
         total,
         status,
         percent,
-        change: 9
+        change: 10
       })
+    },
+    setInterEvent() {
+      this.addSeconds()
+      clearInterval(timer)
+      // 页面重新进入后不会自动更新数据
+      timer = setInterval(() => {
+        if (status) {
+          this.addSeconds()
+        } 
+      }, 1000)
     },
     format(time) {
       let min, sec;
@@ -101,6 +114,7 @@ Component({
     audioInit(currentTime = 0) {
       backgroundAudio = wx.getBackgroundAudioManager();
       backgroundAudio.title = this.properties.title;
+      backgroundAudio.coverImgUrl = this.properties.coverImgUrl;
       backgroundAudio.src = this.properties.audioUrl;
       backgroundAudio.startTime = currentTime;
       this.audioWaiting()
@@ -196,18 +210,21 @@ Component({
         status = true;
         backgroundAudio.onTimeUpdate(() => {
           totalTime = backgroundAudio.duration;
-          currentTime = backgroundAudio.currentTime;
+          currentTime = Math.floor(backgroundAudio.currentTime);
           total = this.format(totalTime)
           currentSeconds = this.format(currentTime)
           percent = Math.round(currentTime) / Math.round(totalTime) * 100;
-          this.triggerEvent('audioData', {
-            isLoading: false,
-            currentSeconds,
-            total,
-            status,
-            percent,
-            change: 6
-          })
+          if(!isSame) {
+            this.triggerEvent('audioData', {
+              isLoading: false,
+              currentSeconds,
+              total,
+              status,
+              percent,
+              change: 6
+            })
+          }
+          
         })
       })
     },
@@ -250,6 +267,7 @@ Component({
     },
     pauseAudio() {
       status = false;
+      clearInterval(timer)
       backgroundAudio.pause();
       this.triggerEvent('audioData', {
         isLoading: false,
@@ -262,14 +280,18 @@ Component({
     },
     playAudio() {
       status = true;
-      this.triggerEvent('audioData', {
-        isLoading: false,
-        currentSeconds,
-        total,
-        status,
-        percent,
-        change: 9
-      })
+      if(!isSame) {
+        this.triggerEvent('audioData', {
+          isLoading: false,
+          currentSeconds,
+          total,
+          status,
+          percent,
+          change: 9
+        })
+      } else {
+        this.setInterEvent()
+      }
       backgroundAudio.play();
       // 当暂停音频后，重新进入页面，初始化音频不然数据更新不了
       if (navigateBack) {
