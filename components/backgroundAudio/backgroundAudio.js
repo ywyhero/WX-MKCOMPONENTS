@@ -10,6 +10,7 @@ let backgroundClose = false
 let timer = null
 let navigateBack = false
 let isSame = false
+let isMediaError = false
 Component({
   options: {
     multipleSlots: true // 在组件定义时的选项中启用多slot支持
@@ -28,6 +29,7 @@ Component({
       value: '',
       observer(newVal, oldVal) {
         if (newVal !== oldVal && newVal !== '' && oldVal !== '') {
+          clearInterval(timer)
           isSame = false
           this.audioInit()
         }
@@ -117,6 +119,7 @@ Component({
       backgroundAudio.coverImgUrl = this.properties.coverImgUrl;
       backgroundAudio.src = this.properties.audioUrl;
       backgroundAudio.startTime = currentTime;
+      isMediaError = false
       this.audioWaiting()
       this.audioCanPlay()
       this.audioPause()
@@ -128,6 +131,7 @@ Component({
         this.loopPlay()
       })
       backgroundAudio.onError(() => {
+        isMediaError = true
         this.triggerEvent('audioError')
       })
       this.audioPlay()
@@ -263,7 +267,7 @@ Component({
       this.triggerEvent('prePlay')
     },
     loopPlay() {
-      this.triggerEvent('loopPlay')
+      !isMediaError && this.triggerEvent('loopPlay')
     },
     pauseAudio() {
       status = false;
